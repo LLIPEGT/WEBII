@@ -28,4 +28,8 @@ class Curso extends Model
     public function user() {
         return $this->hasMany('\App\Models\User');
     }
+
+    public function aluno() {
+        return $this->hasMany('\App\Models\Aluno');
+    }
 }
