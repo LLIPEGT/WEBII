@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Nivel;
-use App\Repositories\CursoRepository;
 use App\Repositories\NivelRepository;
 use Illuminate\Http\Request;
 
@@ -20,7 +19,8 @@ class NivelController extends Controller
     public function index()
     {
         $data = $this->repository->selectAll();
-        return $data;
+        //return $data;
+        return view('nivel.index', compact('data'));
     }
 
     /**
@@ -28,7 +28,7 @@ class NivelController extends Controller
      */
     public function create()
     {
-        //
+        return view('nivel.create');
     }
 
     /**

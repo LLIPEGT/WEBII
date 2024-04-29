@@ -16,8 +16,8 @@ class EixoController extends Controller
     }
 
     public function index() {
-        
         $data = $this->repository->selectAllWith(['curso']);
+        return view('eixo.index', compact('data'));
         return $data;
     }
 
@@ -26,7 +26,7 @@ class EixoController extends Controller
      */
     public function create()
     {
-        //
+        return view('eixo.create');
     }
 
     public function store(Request $request)

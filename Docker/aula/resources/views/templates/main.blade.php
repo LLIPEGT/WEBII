@@ -44,7 +44,7 @@
 								</a> 
 							</li>
 							<li class="sidebar-item"> 
-								<a href="{{route('nivel.index')}}" class="sidebar-link"> 
+								<a href="{{route('nivel.index')}}"class="sidebar-link"> 
 									<span class="ms-3">Níveis de Ensino</span> 
 								</a> 
 							</li>  

@@ -20,6 +20,7 @@ class CursoController extends Controller
     public function index() {
         
         $data = $this->repository->selectAllWith(['eixo', 'nivel']);
+        return view('curso.index', compact('data'));
         return $data;
     }
 
