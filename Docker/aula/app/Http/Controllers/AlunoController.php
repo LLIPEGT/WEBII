@@ -33,7 +33,10 @@ class AlunoController extends Controller
      */
     public function create()
     {
-        //
+        $curso = (new CursoRepository())->selectAll((object)["use" => false, "row" => 0]);
+        $turma = (new TurmaRepository())->selectAll((object)["use"=>false, "row"=>0]);
+
+        return view('aluno.create', compact(['curso', 'turma']));
     }
 
     /**
@@ -65,9 +68,9 @@ class AlunoController extends Controller
      */
     public function show(string $id)
     {
-        $obj = $this->repository->findById($id);
-        if(isset($obj)){
-            return $obj;
+        $data = $this->repository->findById($id);
+        if(isset($data)){
+            return view('aluno.show', compact(['data']));
         }
 
         return "<h1>Show - ERRO!</h1>";
