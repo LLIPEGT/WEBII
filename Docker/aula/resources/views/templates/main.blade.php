@@ -39,7 +39,7 @@
 								</a> 
 							</li> 
 							<li class="sidebar-item"> 
-								<a href="{{route('curso.index')}}" class="sidebar-link"> 
+								<a href="{{route('eixo.index')}}" class="sidebar-link"> 
 									<span class="ms-3">Eixos</span> 
 								</a> 
 							</li>
@@ -61,7 +61,7 @@
 						</a> 
 						<ul id="coord" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar"> 					
 							<li class="sidebar-item"> 
-								<a href="#" class="sidebar-link"> 
+								<a href="{{route('aluno.index')}}" class="sidebar-link"> 
 									<span class="ms-3">Alunos</span> 
 								</a> 
 							</li> 
@@ -71,7 +71,7 @@
 								</a> 
 							</li> 
 							<li class="sidebar-item"> 
-								<a href="#" class="sidebar-link"> 
+								<a href="{{route('categoria.index')}}" class="sidebar-link"> 
 									<span class="ms-3">Categorias</span> 
 								</a> 
 							</li> 

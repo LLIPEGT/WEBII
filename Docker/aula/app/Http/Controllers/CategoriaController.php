@@ -21,6 +21,7 @@ class CategoriaController extends Controller
     public function index()
     {
         $data = $this->repository->selectAllWith(['curso']);
+        return view('categoria.index', compact('data'));
         return $data;
     }
 

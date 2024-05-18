@@ -24,6 +24,7 @@ class AlunoController extends Controller
     public function index()
     {
         $data = $this->repository->selectAllWith(['user', 'curso', 'turma']);
+        return view('aluno.index', compact('data'));
         return $data;
     }
 

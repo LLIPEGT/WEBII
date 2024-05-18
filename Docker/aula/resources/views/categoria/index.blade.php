@@ -1,18 +1,19 @@
-@extends('templates/main', ['titulo'=>"ALUNO"])
+@extends('templates/main', ['titulo'=>"CATEGORIA"])
 
 @section('conteudo')
 
     <x-datatable
-        title="Tabela de Alunos"
+        title="Tabela de Categorias"
         :header="['ID', 'Nome', 'Ações']"
-        crud="aluno"
+        crud="categoria"
         :data="$data"
         :fields="['id', 'nome']"
         :hide="[true, false, false]"
         remove="nome"
-        create="aluno.create"
+        create="categoria.create"
         id=""
         modal=""
-    />
 
-    @endsection
+
+    />
+@endsection
