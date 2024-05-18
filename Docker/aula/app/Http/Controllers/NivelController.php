@@ -37,9 +37,18 @@ class NivelController extends Controller
     public function store(Request $request)
     {
         $obj = new Nivel();
-        $obj->nome = mb_strtoupper($request->nome, 'UTF-8');
-        $this->repository->save($obj);
-        return "<h1>Store - OK!</h1>";
+        if(isset($obj)){
+            $obj->nome = mb_strtoupper($request->nome, 'UTF-8');
+            $this->repository->save($obj);
+            return redirect()->route('nivel.index');
+        }
+        return view('message')
+        ->with('template', "main")
+        ->with('type', "warning")
+        ->with('titulo', "OPERAÇÃO INVÁLIDA")
+        ->with('message', "Não foi possível efetuar o registro!")
+        ->with('link', "nivel.index");
+
     }
 
     /**
@@ -50,10 +59,15 @@ class NivelController extends Controller
         $data = $this->repository->findById($id);
 
         if(isset($data)){
-            return $data;
+            return view('nivel.show', compact('data'));
         }
 
-        return "<h1>Show - ERROR!</h1>";
+        return view('message')
+        ->with('template', "main")
+        ->with('type', "warning")
+        ->with('titulo', "OPERAÇÃO INVÁLIDA")
+        ->with('message', "Não foi possível encontrar o registro!")
+        ->with('link', "nivel.index");
     }
 
     /**
@@ -61,7 +75,16 @@ class NivelController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data = $this->repository->findById($id);
+        if(isset($data)){
+            return view('nivel.edit', compact(['data']));
+        }
+        return view('message')
+        ->with('template', "main")
+        ->with('type', "warning")
+        ->with('titulo', "OPERAÇÃO INVÁLIDA")
+        ->with('message', "Nivel não encontrado para a alteração!")
+        ->with('link', "nivel.index");
     }
 
     /**
@@ -74,9 +97,14 @@ class NivelController extends Controller
         if(isset($obj)) {
             $obj->nome = mb_strtoupper($request->nome, 'UTF-8');
             $this->repository->save($obj);
-            return "<h1>Upate - OK!</h1>";
+            return redirect()->route('nivel.index');
         }
-        return "<h1>Upate - Not found Eixo!</h1>";
+        return view('message')
+        ->with('template', "main")
+        ->with('type', "warning")
+        ->with('titulo', "OPERAÇÃO INVÁLIDA")
+        ->with('message', "Não foi possível efetuar o registro!")
+        ->with('link', "nivel.index");
     }
 
     /**
@@ -85,9 +113,14 @@ class NivelController extends Controller
     public function destroy(string $id)
     {
         if($this->repository->delete($id)) {
-            return "<h1>Delete - OK!</h1>";
+            return redirect()->route('nivel.index');
         }
         
-        return "<h1>Delete - Not found Eixo!</h1>";
+        return view('message')
+        ->with('template', "main")
+        ->with('type', "warning")
+        ->with('titulo', "OPERAÇÃO INVÁLIDA")
+        ->with('message', "Não foi possível deletar o registro!")
+        ->with('link', "nivel.index");
     }
 }
