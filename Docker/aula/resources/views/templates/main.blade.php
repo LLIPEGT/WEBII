@@ -115,10 +115,10 @@
 							</svg>
 							<span class="ms-2">Professor</span>
 						</a> 
-						<ul id="prof" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar"> 					
+						<ul id="prof" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar"> 				
 							<li class="sidebar-item"> 
-								<a href="#" class="sidebar-link"> 
-									<span class="ms-3">Cadastrar Horas</span> 
+								<a href="{{ route('comprovante.index') }}" class="sidebar-link"> 
+									<span class="ms-3">Comprovante</span> 
 								</a> 
 							</li> 
 						</ul> 

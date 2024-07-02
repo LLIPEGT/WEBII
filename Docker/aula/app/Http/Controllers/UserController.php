@@ -24,7 +24,7 @@ class UserController extends Controller
     public function index()
     {
         $data = $this->repository->selectAllWith(['role', 'curso']);
-        return $data;
+        return view('users.index', compact('data'));
     }
 
     /**
@@ -64,7 +64,7 @@ class UserController extends Controller
         $data = $this->repository->findById($id);
 
         if(isset($data)){
-            return $data;
+            return view('users.show', compact('data'));
         }
 
         return '<h1> show - error </h1>';

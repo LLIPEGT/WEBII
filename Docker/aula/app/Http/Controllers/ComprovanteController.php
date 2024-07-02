@@ -22,7 +22,8 @@ class ComprovanteController extends Controller
     public function index()
     {
         $data = $this->repository->selectAllWith(['user', 'categoria', 'aluno']);
-        return $data;
+        //return $data;
+        return view('comprovante.index', compact('data'));
     }
 
     /**
@@ -30,7 +31,10 @@ class ComprovanteController extends Controller
      */
     public function create()
     {
-        //
+        $user = (new UserRepository())->selectAll((object) [ "use" => false, "rows" => 0]);
+        $categoria = (new CategoriaRepository())->selectAll((object) [ "use" => false, "rows" => 0]);
+        $aluno = (new AlunoRepository())->selectAll((object) [ "use" => false, "rows" => 0]);
+        return view('comprovante.create', compact(['user', 'categoria', 'aluno']));
     }
 
     /**
