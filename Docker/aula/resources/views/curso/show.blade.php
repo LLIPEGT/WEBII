@@ -2,7 +2,7 @@
 
 @section('conteudo')
 
-    <form action="{{ route('curso.store') }}" method="POST">
+    <form action="{{ route('curso.store') }}" method="GET">
         @csrf
         <x-textbox name="nome" label="Nome" type="text" value="{{$data->nome}}" disabled="true"/>
         <x-textbox name="sigla" label="Sigla" type="text" value="{{$data->sigla}}" disabled="true"/>

@@ -22,7 +22,7 @@ class CategoriaController extends Controller
     {
         $data = $this->repository->selectAllWith(['curso']);
         return view('categoria.index', compact('data'));
-        return $data;
+        //return $data;
     }
 
     /**
@@ -30,7 +30,9 @@ class CategoriaController extends Controller
      */
     public function create()
     {
-        //
+        $curso = (new CursoRepository())->selectAll((object) ["use" => false, "rows" => 0]);
+
+        return view('categoria.create', compact(['curso']));
     }
 
     /**
@@ -46,9 +48,14 @@ class CategoriaController extends Controller
             $obj->maximo_horas = $request->maximo_horas;            
             $obj->curso()->associate($objCurso);
             $this->repository->save($obj);
-            return "<h1>Store - OK!</h1>";
+            return redirect()->route('categoria.index');
         }
-        return "<h1>Store - ERRO!</h1>";
+        return view('message')
+        ->with('template', "main")
+        ->with('type', "danger")
+        ->with('titulo', "OPERAÇÃO INVÁLIDA")
+        ->with('message', "Não foi possível efetuar o registro!")
+        ->with('link', "categoria.index");
     }
 
     /**
@@ -56,12 +63,15 @@ class CategoriaController extends Controller
      */
     public function show(string $id)
     {
-        $obj = $this->repository->findById($id);
+        /*$obj = $this->repository->findById($id);
 
         if(isset($obj)){
             $data = $this->repository->findById($id);
             return $data;
-        }
+        }*/
+
+        $data = $this->repository->findByIdWith(['curso'], $id);
+        return view('categoria.show', compact('data'));
     }
 
     /**
@@ -69,7 +79,18 @@ class CategoriaController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data = $this->repository->findById($id);
+        if(isset($data)){
+            $cursos = (new CursoRepository())->selectAll();
+            return view('categoria.edit', compact(['data', 'cursos']));
+        }
+        return view('message')
+        ->with('template', "main")
+        ->with('type', "warning")
+        ->with('titulo', "OPERAÇÃO INVÁLIDA")
+        ->with('message', "Categoria não encontrada para alteração!")
+        ->with('link', "categoria.index");
+        
     }
 
     /**

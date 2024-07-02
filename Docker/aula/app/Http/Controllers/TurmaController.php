@@ -23,6 +23,7 @@ class TurmaController extends Controller
     {
         $data = $this->repository->selectAllWith(['curso']);
         return $data;
+        //return view('turma.index', compact('data'));
     }
 
     /**

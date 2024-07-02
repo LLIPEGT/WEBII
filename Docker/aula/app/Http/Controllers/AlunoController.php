@@ -58,7 +58,7 @@ class AlunoController extends Controller
             $obj->curso()->associate($objCurso);
             $obj->turma()->associate($objTurma);
             $this->repository->save($obj);
-            return "<h1>Store - OK!</h1>";
+            return redirect()->route('aluno.index');
         }
         return "<h1>Store - ERRO!</h1>";
     }
@@ -81,7 +81,14 @@ class AlunoController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data = $this->repository->findById($id);
+        if(isset($data)){
+            $curso = (new CursoRepository())->selectAll();
+            $turma = (new TurmaRepository())->selectAll();
+            return view('aluno.edit', compact(['data', 'curso', 'turma']));
+        }
+
+
     }
 
     /**
@@ -101,7 +108,7 @@ class AlunoController extends Controller
             $obj->curso()->associate($objCurso);
             $obj->turma()->associate($objTurma);
             $this->repository->save($obj);
-            return "<h1>Store - OK!</h1>";
+            return redirect()->route('aluno.index');
         }
         return "<h1>Store - ERRO!</h1>";
     }
