@@ -22,8 +22,8 @@ class TurmaController extends Controller
     public function index()
     {
         $data = $this->repository->selectAllWith(['curso']);
-        return $data;
-        //return view('turma.index', compact('data'));
+        //return $data;
+        return view('turma.index', compact('data'));
     }
 
     /**
@@ -31,7 +31,8 @@ class TurmaController extends Controller
      */
     public function create()
     {
-        //
+        $cursos = (new CursoRepository())->selectAll((object) ["use" => false, "rows" => 0]);
+        return view('turma.create', compact(['cursos']));
     }
 
     /**
@@ -46,7 +47,7 @@ class TurmaController extends Controller
             $obj->ano = $request->ano;
             $obj->curso()->associate($objCurso);
             $this->repository->save($obj);
-            return "<h1>Store - OK!</h1>";
+            return redirect()->route('turma.index');
         }
         return "<h1>Store - ERRO!</h1>";
     }
@@ -56,12 +57,11 @@ class TurmaController extends Controller
      */
     public function show(string $id)
     {   
-        
-        $data = $this->repository->findById($id);
+        $data = $this->repository->findByIdWith(['curso'], $id);
         if(isset($data)){
-            return $data;
+            return view('turma.show', compact('data'));;
         }   
-        return "<h1>show - ERRO!</h1>";
+            return "ERROO";
     }
 
     /**
@@ -69,7 +69,12 @@ class TurmaController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data = $this->repository->findById($id);
+        if(isset($data)){
+            $cursos = (new CursoRepository())->selectAll();
+
+            return view('turma.edit', compact(['data', 'cursos']));
+        }
     }
 
     /**
@@ -84,7 +89,7 @@ class TurmaController extends Controller
             $obj->ano = $request->ano;
             $obj->curso()->associate($objCurso);
             $this->repository->save($obj);
-            return "<h1>Update - OK!</h1>";
+            ;
         }
         return "<h1>Update - ERRO!</h1>";
     }

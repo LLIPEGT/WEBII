@@ -6,6 +6,7 @@
         @csrf
         @method('PUT')
         <x-textbox name="nome" label="Nome" type="text" :value="$data->nome" disabled="false"/>
+        <x-textbox name="cpf" label="CPF" type="text" :value="$data->cpf" disabled="false"/>
         <x-textbox name="email" label="Email" type="text" :value="$data->email" disabled="false"/>
         <x-selectbox name="curso_id" label="Curso" color="success" :data="$curso" field="nome" disabled="false" :select="$data->curso_id"/>
         <x-selectbox name="turma_id" label="Turma" color="success" :data="$turma" field="ano" disabled="false" :select="$data->turma_id"/>

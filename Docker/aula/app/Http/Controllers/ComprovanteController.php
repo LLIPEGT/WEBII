@@ -55,9 +55,14 @@ class ComprovanteController extends Controller
             $obj->user()->associate($objUser);
             $this->repository->save($obj);
 
-            return '<h1> store - ok </h1>';
+            return redirect()->route('comprovante.index');
         }
-        return '<h1> store - error </h1>';
+        return view('message')
+            ->with('template', "main")
+            ->with('type', "danger")
+            ->with('titulo', "OPERAÇÃO INVÁLIDA")
+            ->with('message', "Não foi possível efetuar o registro!")
+            ->with('link', "comprovante.index");
     }
 
     /**
@@ -68,9 +73,14 @@ class ComprovanteController extends Controller
         $data = $this->repository->findById($id);
 
         if($data){
-            return $data;
+            return view('comprovante.show', compact('data'));
         }
-        return '<h1> show - error </h1>';
+        return view('message')
+            ->with('template', "main")
+            ->with('type', "danger")
+            ->with('titulo', "OPERAÇÃO INVÁLIDA")
+            ->with('message', "Não foi possível visualizar o registro!")
+            ->with('link', "comprovante.index");
     }
 
     /**
@@ -78,7 +88,19 @@ class ComprovanteController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data = $this->repository->findById($id);
+        if(isset($data)){
+            $categoria = (new CategoriaRepository())->selectAll();
+            $aluno = (new AlunoRepository())->selectAll();
+            $user = (new UserRepository())->selectAll();
+            return view('comprovante.edit', compact(['data', 'categoria', 'aluno', 'user']));
+        }
+        return view('message')
+        ->with('template', "main")
+        ->with('type', "warning")
+        ->with('titulo', "OPERAÇÃO INVÁLIDA")
+        ->with('message', "Comprovante não encontrado para alteração!")
+        ->with('link', "comprovante.index");
     }
 
     /**
@@ -99,9 +121,14 @@ class ComprovanteController extends Controller
             $obj->user()->associate($objUser);
             $this->repository->save($obj);
 
-            return '<h1> update - ok </h1>';
+            return redirect()->route('comprovante.index');
         }
-        return '<h1> update - error </h1>';
+        return view('message')
+            ->with('template', "main")
+            ->with('type', "danger")
+            ->with('titulo', "OPERAÇÃO INVÁLIDA")
+            ->with('message', "Não foi possível efetuar o registro!")
+            ->with('link', "comprovante.index");
     }
 
     /**
@@ -110,8 +137,13 @@ class ComprovanteController extends Controller
     public function destroy(string $id)
     {
         if($this->repository->delete($id)){
-            return '<h1> delete - ok </h1>';
+            return redirect()->route('comprovante.index');
         }
-        '<h1> delete - error </h1>';
+        return view('message')
+            ->with('template', "main")
+            ->with('type', "danger")
+            ->with('titulo', "OPERAÇÃO INVÁLIDA")
+            ->with('message', "Não foi possível efetuar o registro!")
+            ->with('link', "comprovante.index");
     }
 }

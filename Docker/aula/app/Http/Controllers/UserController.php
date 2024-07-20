@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-
     protected $repository;
 
     public function __construct() {
@@ -23,8 +22,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $data = $this->repository->selectAllWith(['role', 'curso']);
-        return view('users.index', compact('data'));
+        $data = $this->repository->selectAllWith(
+            ['role', 'curso']);
+        return $data;
     }
 
     /**
@@ -51,9 +51,15 @@ class UserController extends Controller
             $obj->curso()->associate($objCurso);
             $obj->role()->associate($objRole);
             $this->repository->save($obj);
-            return "<h1>Store - OK!</h1>";
+            return redirect()->route('users.role', $objRole->nome);
         }
-        return "<h1>Store - ERRO!</h1>";
+        
+        return view('message')
+                    ->with('template', "main")
+                    ->with('type', "danger")
+                    ->with('titulo', "OPERAÇÃO INVÁLIDA")
+                    ->with('message', "Não foi possível efetuar o procedimento!")
+                    ->with('link', "home");
     }
 
     /**
@@ -61,13 +67,21 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $data = $this->repository->findById($id);
+        $data = $this->repository->findByIdWith(['curso'], $id);
 
-        if(isset($data)){
-            return view('users.show', compact('data'));
-        }
-
-        return '<h1> show - error </h1>';
+        if(isset($data)) {
+            $cursos = (new CursoRepository())->selectAll();
+            $roles = (new RoleRepository())->selectAll();
+            $nome = (new RoleRepository())->findById($data->role_id)->nome;
+            return view('user.show', compact(['data', 'cursos', 'roles', 'nome']));
+        } 
+        
+        return view('message')
+            ->with('template', "main")
+            ->with('type', "danger")
+            ->with('titulo', "OPERAÇÃO INVÁLIDA")
+            ->with('message', "Não foi possível buscar o procedimento!")
+            ->with('link', "curso.index");
     }
 
     /**
@@ -75,7 +89,24 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data = $this->repository->findByIdWith(['curso'], $id);
+
+        if(isset($data)){
+            $cursos = (new CursoRepository())->selectAll();
+            $roles = (new RoleRepository())->selectAll();
+            $nome = (new RoleRepository())->findById($data->role_id)->nome;
+            $role_id = $data->role_id;
+
+            return view('user.edit', compact(['data', 'cursos', 'roles', 'nome', 'role_id']));
+
+            
+        }
+        return view('message')
+                    ->with('template', "main")
+                    ->with('type', "danger")
+                    ->with('titulo', "OPERAÇÃO INVÁLIDA")
+                    ->with('message', "Não foi possível atualizar o procedimento!")
+                    ->with('link', "home");
     }
 
     /**
@@ -83,6 +114,7 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $nome = (new RoleRepository())->findById($this->repository->findById($id)->role_id)->nome;
         $obj = $this->repository->findById($id);
         $objCurso = (new CursoRepository())->findById($request->curso_id);
         $objRole = (new RoleRepository())->findById($request->role_id);
@@ -94,10 +126,15 @@ class UserController extends Controller
             $obj->curso()->associate($objCurso);
             $obj->role()->associate($objRole);
             $this->repository->save($obj);
-            return "<h1>update - OK!</h1>";
+            return redirect()->route('users.role', $nome);
         }
-        return "<h1>update - ERRO!</h1>";
         
+        return view('message')
+            ->with('template', "main")
+            ->with('type', "danger")
+            ->with('titulo', "OPERAÇÃO INVÁLIDA")
+            ->with('message', "Não foi possível efetuar o procedimento!")
+            ->with('link', "curso.index");
     }
 
     /**
@@ -105,9 +142,37 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        if($this->repository->delete($id)){
-            return '<h1>delete - ok </h1>';
+        $nome = (new RoleRepository())->findById($this->repository->findById($id)->role_id)->nome;
+        if($this->repository->delete($id))  {
+            return redirect()->route('users.role', $nome);
         }
-        return '<h1>delete - error </h1>';
+        
+        return view('message')
+            ->with('template', "main")
+            ->with('type', "danger")
+            ->with('titulo', "OPERAÇÃO INVÁLIDA")
+            ->with('message', "Não foi possível efetuar o procedimento!")
+            ->with('link', "home");
     }
+
+    public function getUsersByRole($role) {
+
+        $role = mb_strtoupper($role, 'UTF-8');
+        $objRole = (new RoleRepository())->findFirstByColumn("nome", $role);
+        $data = $this->repository->findByColumn('role_id', $objRole->id);
+        $route = "users.role.create";
+        $id = $objRole->id;
+        // return $data;
+        return view('user.index', compact('data', 'role', 'route', 'id'));
+    }
+
+    public function createUsersByRole($role_id) {
+
+        $cursos = (new CursoRepository())->selectAll();
+        $nome = (new RoleRepository())->findById($role_id)->nome;
+        $roles = (new RoleRepository())->selectAll();
+        return view('user.create', compact(['cursos', 'roles', 'role_id', 'nome']));
+    }
+
+    
 }

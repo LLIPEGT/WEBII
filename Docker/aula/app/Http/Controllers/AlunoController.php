@@ -60,7 +60,12 @@ class AlunoController extends Controller
             $this->repository->save($obj);
             return redirect()->route('aluno.index');
         }
-        return "<h1>Store - ERRO!</h1>";
+        return view('message')
+            ->with('template', "main")
+            ->with('type', "danger")
+            ->with('titulo', "OPERAÇÃO INVÁLIDA")
+            ->with('message', "Não foi possível efetuar o registro!")
+            ->with('link', "aluno.index");
     }
 
     /**
@@ -73,7 +78,12 @@ class AlunoController extends Controller
             return view('aluno.show', compact(['data']));
         }
 
-        return "<h1>Show - ERRO!</h1>";
+        return view('message')
+            ->with('template', "main")
+            ->with('type', "danger")
+            ->with('titulo', "OPERAÇÃO INVÁLIDA")
+            ->with('message', "Não foi possível buscar o registro!")
+            ->with('link', "aluno.index");
     }
 
     /**
@@ -110,7 +120,12 @@ class AlunoController extends Controller
             $this->repository->save($obj);
             return redirect()->route('aluno.index');
         }
-        return "<h1>Store - ERRO!</h1>";
+        return view('message')
+            ->with('template', "main")
+            ->with('type', "danger")
+            ->with('titulo', "OPERAÇÃO INVÁLIDA")
+            ->with('message', "Não foi possível atualizar o registro!")
+            ->with('link', "aluno.index");
     }
 
     /**
@@ -119,9 +134,14 @@ class AlunoController extends Controller
     public function destroy(string $id)
     {
         if($this->repository->delete($id)){
-            return "<h1>delete - OK!</h1>";
+            return redirect()->route('aluno.index');
         }
 
-        return "<h1>delete - error!</h1>";
+        return view('message')
+            ->with('template', "main")
+            ->with('type', "danger")
+            ->with('titulo', "OPERAÇÃO INVÁLIDA")
+            ->with('message', "Não foi possível efetuar o registro!")
+            ->with('link', "aluno.index");
     }
 }

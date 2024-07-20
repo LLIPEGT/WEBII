@@ -6,7 +6,7 @@
         @csrf
         <x-textbox name="horas" label="Horas" type="number" value="null" disabled="false"/>
         <x-textbox name="atividade" label="Atividade" type="text" value="null" disabled="false"/>
-        <x-selectbox name="user_id" label="Usuario" color="success" :data="$user" field="nome" disabled="false" select="-1"/>
+        <x-selectbox name="user_id" label="Usuario" color="success" :data="$user" field="name" disabled="false" select="-1"/>
         <x-selectbox name="categoria_id" label="Categoria" color="success" :data="$categoria" field="nome" disabled="false" select="-1"/>
         <x-selectbox name="aluno_id" label="Aluno" color="success" :data="$aluno" field="nome" disabled="false" select="-1"/>
         <div class="row">

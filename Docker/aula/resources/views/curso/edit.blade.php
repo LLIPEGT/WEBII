@@ -2,7 +2,7 @@
 
 @section('conteudo')
 
-    <form action="{{ route('curso.update', $data->id) }}" method="POST">
+    <form action="{{ route('curso.update', $data->id) }}" method="PUT">
         @csrf
         @method('PUT')
         <x-textbox name="nome" label="Nome" type="text" :value="$data->nome" disabled="false"/>

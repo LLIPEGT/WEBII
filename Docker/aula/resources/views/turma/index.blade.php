@@ -1,9 +1,9 @@
-@extends('templates/main', ['titulo'=>"Turmas"])
+@extends('templates/main', ['titulo'=>"TURMA"])
 
 @section('conteudo')
 
     <x-datatable 
-        title="Tabela de Turma" 
+        title="Tabela de Turmas" 
         :header="['ID', 'Ano', 'Ações']" 
         crud="turma" 
         :data="$data"

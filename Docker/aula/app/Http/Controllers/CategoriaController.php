@@ -106,9 +106,14 @@ class CategoriaController extends Controller
             $obj->maximo_horas = $request->maximo_horas;
             $obj->curso()->associate($objCurso);
             $this->repository->save($obj);
-            return "<h1>Update - OK!</h1>";
+            return redirect()->route('categoria.index');
         }
-        return "<h1>Update - ERRO!</h1>";
+        return view('message')
+            ->with('template', "main")
+            ->with('type', "danger")
+            ->with('titulo', "OPERAÇÃO INVÁLIDA")
+            ->with('message', "Não foi possível atualizar o registro!")
+            ->with('link', "categoria.index");
     }
 
     /**
@@ -117,9 +122,14 @@ class CategoriaController extends Controller
     public function destroy(string $id)
     {
         if($this->repository->delete($id)) {
-            return "<h1>Delete - OK!</h1>";
+            return redirect()->route('categoria.index');
         }
         
-        return "<h1>Delete - Not found !</h1>";
+        return view('message')
+            ->with('template', "main")
+            ->with('type', "danger")
+            ->with('titulo', "OPERAÇÃO INVÁLIDA")
+            ->with('message', "Não foi possível efetuar o registro!")
+            ->with('link', "categoria.index");
     }
 }
